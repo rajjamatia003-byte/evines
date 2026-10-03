@@ -1,0 +1,1812 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Evines - Better Choices. A Healthier You.</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        evines: {
+                            DEFAULT: '#0F382C',
+                            dark: '#0A271F',
+                            light: '#1B4D3E',
+                            accent: '#133E32',
+                            bgLight: '#F7F9F8',
+                            badgeBg: '#EAF1ED',
+                            cardBg: '#FFFFFF'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        handwritten: ['Caveat', 'cursive']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            max-width: 100vw;
+            min-height: 100vh;
+            min-height: 100dvh;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden !important;
+            position: relative;
+            background-color: #FAFAFA;
+            color: #111827;
+            touch-action: pan-y;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        
+        .hero-gradient-overlay {
+            background: linear-gradient(90deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.82) 45%, rgba(255,255,255,0.1) 100%);
+        }
+
+        @media (max-width: 768px) {
+            .hero-gradient-overlay {
+                background: linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 60%, rgba(255,255,255,0.3) 100%);
+            }
+        }
+
+        /* Center-Focused Smooth Horizontal Slider */
+        .slider-container {
+            width: 100%;
+            overflow-x: auto;
+            overflow-y: hidden;
+            overscroll-behavior-x: contain;
+            -webkit-overflow-scrolling: touch;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            padding-left: calc(50vw - 130px);
+            padding-right: calc(50vw - 130px);
+        }
+
+        @media (min-width: 640px) {
+            .slider-container {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+            }
+        }
+
+        .product-slide-card {
+            scroll-snap-align: center;
+            scroll-snap-stop: always;
+            backface-visibility: hidden;
+            transform: translateZ(0);
+            will-change: transform, opacity;
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease, box-shadow 0.3s ease;
+            transform-origin: center center;
+        }
+
+        /* Bottom Floating Bar Smooth Auto-Hide Animation */
+        .bottom-nav {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+        }
+        .bottom-nav-hidden {
+            transform: translateY(120%);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        button:active, a:active {
+            transform: scale(0.97);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 antialiased flex flex-col min-h-screen relative pb-20 sm:pb-0">
+
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed bottom-20 right-6 z-50 flex flex-col gap-3 pointer-events-none"></div>
+
+    <!-- Announcement Bar -->
+    <div class="bg-evines-dark text-white text-xs py-1.5 px-4 text-center font-medium tracking-wide">
+        🍃 Free Shipping on orders over ₹999 | Use Code <span class="text-emerald-300 font-semibold cursor-pointer underline" onclick="copyPromoCode('EVINES10')">EVINES10</span> for 10% OFF
+    </div>
+
+    <!-- Main Navigation Header -->
+    <header class="bg-white sticky top-0 z-40 shadow-sm border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-4">
+            
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center gap-2.5 shrink-0 group">
+                <div class="w-9 h-9 bg-evines rounded-full flex items-center justify-center text-white transition-transform group-hover:scale-105 shadow-md">
+                    <i class="fa-solid me-0.5 fa-leaf text-lg"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-2xl font-extrabold tracking-tight text-evines leading-none">Evines</span>
+                    <span class="text-[9px] text-gray-500 font-semibold tracking-wider mt-0.5 uppercase">Better Choices. A Healthier You.</span>
+                </div>
+            </a>
+
+            <!-- Navigation Links -->
+            <nav class="hidden lg:flex items-center gap-7 text-sm font-medium text-gray-700">
+                <a href="#" class="text-evines font-semibold border-b-2 border-evines pb-1 transition-colors">Home</a>
+                <a href="#catalog-section" class="hover:text-evines transition-colors">Shop</a>
+                <div class="relative group cursor-pointer py-2">
+                    <div class="flex items-center gap-1 hover:text-evines transition-colors">
+                        <span>Categories</span>
+                        <i class="fa-solid fa-chevron-down text-[10px] text-gray-400 group-hover:rotate-180 transition-transform"></i>
+                    </div>
+                    <!-- Dropdown -->
+                    <div class="absolute top-full left-0 w-48 bg-white shadow-xl rounded-xl border border-gray-100 py-2 hidden group-hover:block transition-all z-50">
+                        <a href="#cat-health" class="block px-4 py-2 text-xs hover:bg-emerald-50 hover:text-evines font-medium">Health & Wellness</a>
+                        <a href="#cat-fitness" class="block px-4 py-2 text-xs hover:bg-emerald-50 hover:text-evines font-medium">Fitness & Nutrition</a>
+                        <a href="#cat-skincare" class="block px-4 py-2 text-xs hover:bg-emerald-50 hover:text-evines font-medium">Skincare & Beauty</a>
+                        <a href="#cat-personal" class="block px-4 py-2 text-xs hover:bg-emerald-50 hover:text-evines font-medium">Personal Care</a>
+                    </div>
+                </div>
+                <a href="#about-section" class="hover:text-evines transition-colors">About Us</a>
+                <a href="#footer" class="hover:text-evines transition-colors">Contact</a>
+            </nav>
+
+            <!-- Search Bar -->
+            <div class="flex-1 max-w-md mx-2 hidden md:block">
+                <div class="relative">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                    <input type="text" id="searchInput" onkeyup="handleSearch()" placeholder="Search products (e.g. Whey, Omega, Serum)..." class="w-full bg-gray-100/80 hover:bg-gray-100 focus:bg-white text-xs text-gray-800 pl-9 pr-4 py-2.5 rounded-full outline-none border border-transparent focus:border-evines transition-all">
+                </div>
+            </div>
+
+            <!-- Right Utility Icons -->
+            <div class="flex items-center gap-3 sm:gap-4 text-gray-700">
+                <button onclick="handleAccountClick()" class="p-2 hover:text-evines transition-colors rounded-full hover:bg-gray-100" title="User Account">
+                    <i class="fa-regular fa-user text-lg"></i>
+                </button>
+
+                <!-- Wishlist Icon -->
+                <button onclick="openWishlistModal()" class="p-2 hover:text-evines transition-colors rounded-full hover:bg-gray-100 relative" title="Wishlist">
+                    <i class="fa-regular fa-heart text-lg"></i>
+                    <span id="wishlist-count" class="absolute top-1 right-1 bg-amber-500 text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center border-2 border-white hidden">0</span>
+                </button>
+
+                <!-- Cart Drawer Toggle Button -->
+                <button onclick="toggleCartDrawer()" class="p-2 hover:text-evines transition-colors rounded-full hover:bg-gray-100 relative" title="Shopping Cart">
+                    <i class="fa-solid fa-bag-shopping text-lg"></i>
+                    <span id="cart-count" class="absolute top-0.5 right-0.5 bg-evines text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center border-2 border-white">0</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Search -->
+        <div class="p-3 border-t border-gray-100 md:hidden bg-white">
+            <div class="relative">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                <input type="text" onkeyup="handleSearchMobile(this)" placeholder="Search products..." class="w-full bg-gray-100 text-xs text-gray-800 pl-9 pr-4 py-2 rounded-full outline-none border border-transparent focus:border-evines">
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Banner Section -->
+    <section class="relative bg-stone-200 overflow-hidden min-h-[440px] md:min-h-[500px] flex items-center">
+        <div class="absolute inset-0 z-0">
+            <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=2000&auto=format&fit=crop" alt="Evines Natural Background" class="w-full h-full object-cover object-center">
+            <div class="absolute inset-0 hero-gradient-overlay"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 relative z-10 w-full">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                
+                <div class="lg:col-span-7 space-y-5">
+                    <div class="inline-block">
+                        <span class="text-[11px] sm:text-xs font-bold tracking-[0.2em] text-gray-700 uppercase bg-white/90 backdrop-blur-sm px-3.5 py-1 rounded-full border border-gray-200/60 shadow-sm">
+                            HEALTH / WELLNESS / LIFESTYLE
+                        </span>
+                    </div>
+
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 tracking-tight leading-[1.1]">
+                        A Healthier You, <br class="hidden sm:inline"/>
+                        <span class="text-evines">Naturally with Evines</span>
+                    </h1>
+
+                    <p class="text-sm sm:text-base text-gray-700 max-w-lg leading-relaxed font-normal">
+                        Explore our scientifically backed wellness range designed to boost your daily health, beauty, and energy.
+                    </p>
+
+                    <div class="pt-2">
+                        <a href="#catalog-section" class="inline-flex items-center gap-3 bg-evines hover:bg-evines-dark text-white font-semibold px-7 py-3.5 rounded-full shadow-lg hover:shadow-xl transition-all text-sm group">
+                            <span>Explore Catalog</span>
+                            <i class="fa-solid fa-arrow-right text-xs transition-transform group-hover:translate-x-1"></i>
+                        </a>
+                    </div>
+
+                    <div class="pt-6 sm:pt-10 flex flex-wrap items-center gap-6 text-xs text-gray-800 font-medium">
+                        <div class="flex items-center gap-2">
+                            <div class="w-6 h-6 rounded-full bg-emerald-100/90 flex items-center justify-center text-evines">
+                                <i class="fa-solid fa-shield-halved text-[11px]"></i>
+                            </div>
+                            <span>100% Authentic</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="w-6 h-6 rounded-full bg-emerald-100/90 flex items-center justify-center text-evines">
+                                <i class="fa-solid fa-truck-fast text-[11px]"></i>
+                            </div>
+                            <span>Express Shipping</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="w-6 h-6 rounded-full bg-emerald-100/90 flex items-center justify-center text-evines">
+                                <i class="fa-solid fa-lock text-[11px]"></i>
+                            </div>
+                            <span>Secure Checkout</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5 hidden lg:flex justify-end pr-8">
+                    <div class="text-right select-none transform rotate-[-2deg]">
+                        <p class="font-handwritten text-4xl lg:text-5xl text-gray-900 leading-snug drop-shadow-sm font-bold">
+                            Pure Ingredients <br/>
+                            <span class="text-gray-800">Better Choices</span> <br/>
+                            <span class="text-evines">Healthy Future</span>
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Category Shortcuts Section -->
+    <section id="categories" class="bg-white border-b border-gray-100 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                
+                <a href="#cat-health" class="group flex items-center gap-3 p-3 rounded-2xl bg-gray-50 hover:bg-emerald-50/50 border border-gray-100 transition-all cursor-pointer">
+                    <div class="w-12 h-12 rounded-full bg-evines-badgeBg flex items-center justify-center text-evines group-hover:bg-evines group-hover:text-white transition-colors shrink-0">
+                        <i class="fa-solid fa-leaf text-lg"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xs font-bold text-gray-800 leading-tight">Health & Wellness</h3>
+                        <span class="text-[10px] text-gray-500 font-medium inline-flex items-center gap-1 group-hover:text-evines mt-0.5">
+                            Slide Products <i class="fa-solid fa-arrow-right text-[8px]"></i>
+                        </span>
+                    </div>
+                </a>
+
+                <a href="#cat-fitness" class="group flex items-center gap-3 p-3 rounded-2xl bg-gray-50 hover:bg-emerald-50/50 border border-gray-100 transition-all cursor-pointer">
+                    <div class="w-12 h-12 rounded-full bg-evines-badgeBg flex items-center justify-center text-evines group-hover:bg-evines group-hover:text-white transition-colors shrink-0">
+                        <i class="fa-solid fa-dumbbell text-lg"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xs font-bold text-gray-800 leading-tight">Fitness & Nutrition</h3>
+                        <span class="text-[10px] text-gray-500 font-medium inline-flex items-center gap-1 group-hover:text-evines mt-0.5">
+                            Slide Products <i class="fa-solid fa-arrow-right text-[8px]"></i>
+                        </span>
+                    </div>
+                </a>
+
+                <a href="#cat-skincare" class="group flex items-center gap-3 p-3 rounded-2xl bg-gray-50 hover:bg-emerald-50/50 border border-gray-100 transition-all cursor-pointer">
+                    <div class="w-12 h-12 rounded-full bg-evines-badgeBg flex items-center justify-center text-evines group-hover:bg-evines group-hover:text-white transition-colors shrink-0">
+                        <i class="fa-solid fa-spa text-lg"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xs font-bold text-gray-800 leading-tight">Skincare & Beauty</h3>
+                        <span class="text-[10px] text-gray-500 font-medium inline-flex items-center gap-1 group-hover:text-evines mt-0.5">
+                            Slide Products <i class="fa-solid fa-arrow-right text-[8px]"></i>
+                        </span>
+                    </div>
+                </a>
+
+                <a href="#cat-personal" class="group flex items-center gap-3 p-3 rounded-2xl bg-gray-50 hover:bg-emerald-50/50 border border-gray-100 transition-all cursor-pointer">
+                    <div class="w-12 h-12 rounded-full bg-evines-badgeBg flex items-center justify-center text-evines group-hover:bg-evines group-hover:text-white transition-colors shrink-0">
+                        <i class="fa-solid fa-pump-soap text-lg"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xs font-bold text-gray-800 leading-tight">Personal Care</h3>
+                        <span class="text-[10px] text-gray-500 font-medium inline-flex items-center gap-1 group-hover:text-evines mt-0.5">
+                            Slide Products <i class="fa-solid fa-arrow-right text-[8px]"></i>
+                        </span>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Results Dynamic Section -->
+    <section id="search-results-section" class="py-8 bg-amber-50/40 border-b hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-bold text-gray-900">Search Results</h3>
+                <button onclick="clearSearch()" class="text-xs text-red-600 font-medium hover:underline">Clear Search</button>
+            </div>
+            <div id="search-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                <!-- Injected via Javascript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Main Section -->
+    <section id="catalog-section" class="py-12 bg-gray-50 space-y-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Category 1: Health & Wellness -->
+            <div id="cat-health" class="scroll-mt-24 space-y-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-evines bg-emerald-100 px-2.5 py-1 rounded-full">DAILY CARE</span>
+                        <h2 class="text-2xl font-bold text-gray-900 mt-1">Health & Wellness</h2>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="scrollSlider('slider-health', -280)" class="w-9 h-9 rounded-full bg-white shadow border border-gray-200 flex items-center justify-center text-gray-700 hover:bg-evines hover:text-white transition-colors">
+                            <i class="fa-solid fa-chevron-left text-xs"></i>
+                        </button>
+                        <button onclick="scrollSlider('slider-health', 280)" class="w-9 h-9 rounded-full bg-white shadow border border-gray-200 flex items-center justify-center text-gray-700 hover:bg-evines hover:text-white transition-colors">
+                            <i class="fa-solid fa-chevron-right text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="slider-health" class="slider-container flex gap-5 no-scrollbar py-8">
+                    <!-- Products rendered via JS -->
+                </div>
+            </div>
+
+            <!-- Category 2: Fitness & Nutrition -->
+            <div id="cat-fitness" class="scroll-mt-24 space-y-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-evines bg-emerald-100 px-2.5 py-1 rounded-full">WORKOUT & RECOVERY</span>
+                        <h2 class="text-2xl font-bold text-gray-900 mt-1">Fitness & Nutrition</h2>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="scrollSlider('slider-fitness', -280)" class="w-9 h-9 rounded-full bg-white shadow border border-gray-200 flex items-center justify-center text-gray-700 hover:bg-evines hover:text-white transition-colors">
+                            <i class="fa-solid fa-chevron-left text-xs"></i>
+                        </button>
+                        <button onclick="scrollSlider('slider-fitness', 280)" class="w-9 h-9 rounded-full bg-white shadow border border-gray-200 flex items-center justify-center text-gray-700 hover:bg-evines hover:text-white transition-colors">
+                            <i class="fa-solid fa-chevron-right text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="slider-fitness" class="slider-container flex gap-5 no-scrollbar py-8">
+                    <!-- Products rendered via JS -->
+                </div>
+            </div>
+
+            <!-- Category 3: Skincare & Beauty -->
+            <div id="cat-skincare" class="scroll-mt-24 space-y-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-evines bg-emerald-100 px-2.5 py-1 rounded-full">NATURAL GLOW</span>
+                        <h2 class="text-2xl font-bold text-gray-900 mt-1">Skincare & Beauty</h2>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="scrollSlider('slider-skincare', -280)" class="w-9 h-9 rounded-full bg-white shadow border border-gray-200 flex items-center justify-center text-gray-700 hover:bg-evines hover:text-white transition-colors">
+                            <i class="fa-solid fa-chevron-left text-xs"></i>
+                        </button>
+                        <button onclick="scrollSlider('slider-skincare', 280)" class="w-9 h-9 rounded-full bg-white shadow border border-gray-200 flex items-center justify-center text-gray-700 hover:bg-evines hover:text-white transition-colors">
+                            <i class="fa-solid fa-chevron-right text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="slider-skincare" class="slider-container flex gap-5 no-scrollbar py-8">
+                    <!-- Products rendered via JS -->
+                </div>
+            </div>
+
+            <!-- Category 4: Personal Care -->
+            <div id="cat-personal" class="scroll-mt-24 space-y-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-evines bg-emerald-100 px-2.5 py-1 rounded-full">HYGIENE & ESSENTIALS</span>
+                        <h2 class="text-2xl font-bold text-gray-900 mt-1">Personal Care</h2>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="scrollSlider('slider-personal', -280)" class="w-9 h-9 rounded-full bg-white shadow border border-gray-200 flex items-center justify-center text-gray-700 hover:bg-evines hover:text-white transition-colors">
+                            <i class="fa-solid fa-chevron-left text-xs"></i>
+                        </button>
+                        <button onclick="scrollSlider('slider-personal', 280)" class="w-9 h-9 rounded-full bg-white shadow border border-gray-200 flex items-center justify-center text-gray-700 hover:bg-evines hover:text-white transition-colors">
+                            <i class="fa-solid fa-chevron-right text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="slider-personal" class="slider-container flex gap-5 no-scrollbar py-8">
+                    <!-- Products rendered via JS -->
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Promo Banners Section -->
+    <section class="py-10 bg-white border-t border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <div class="bg-black text-white rounded-3xl p-6 sm:p-7 relative overflow-hidden flex flex-col justify-between min-h-[210px] shadow-sm">
+                    <div class="absolute inset-0 z-0">
+                        <img src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?q=80&w=800&auto=format&fit=crop" alt="Athletic Fitness" class="w-full h-full object-cover object-center opacity-40">
+                        <div class="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-transparent"></div>
+                    </div>
+                    <div class="relative z-10 max-w-[220px]">
+                        <h3 class="font-extrabold text-lg sm:text-xl tracking-tight leading-snug">
+                            BUILD A STRONGER <br/><span class="text-amber-400">YOU</span>
+                        </h3>
+                        <p class="text-[11px] text-gray-300 mt-2 leading-relaxed">
+                            <strong class="text-white font-semibold">Evines</strong> peak physical performance formulas.
+                        </p>
+                    </div>
+                    <div class="relative z-10 pt-4">
+                        <a href="#cat-fitness" class="inline-flex items-center gap-2 bg-evines hover:bg-evines-light text-white text-xs font-semibold px-4 py-2 rounded-full transition-all">
+                            <span>Shop Fitness</span>
+                            <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="bg-[#F2ECE6] text-gray-900 rounded-3xl p-6 sm:p-7 relative overflow-hidden flex flex-col justify-between min-h-[210px] shadow-sm">
+                    <div class="absolute inset-0 z-0">
+                        <img src="https://images.unsplash.com/photo-1512290900673-7002008e330f?q=80&w=800&auto=format&fit=crop" alt="Skincare Model" class="w-full h-full object-cover object-right opacity-80">
+                        <div class="absolute inset-0 bg-gradient-to-r from-[#F2ECE6] via-[#F2ECE6]/90 to-transparent"></div>
+                    </div>
+                    <div class="relative z-10 max-w-[210px]">
+                        <h3 class="font-extrabold text-lg sm:text-xl tracking-tight text-gray-900 leading-snug">
+                            SKINCARE <br/>THAT CARES
+                        </h3>
+                        <p class="text-[11px] text-gray-600 mt-2 leading-relaxed">
+                            Natural organic botanical blends.
+                        </p>
+                    </div>
+                    <div class="relative z-10 pt-4">
+                        <a href="#cat-skincare" class="inline-flex items-center gap-2 bg-evines hover:bg-evines-dark text-white text-xs font-semibold px-4 py-2 rounded-full transition-all">
+                            <span>Shop Skincare</span>
+                            <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="bg-[#EAE8E3] text-gray-900 rounded-3xl p-6 sm:p-7 relative overflow-hidden flex flex-col justify-between min-h-[210px] shadow-sm">
+                    <div class="absolute inset-0 z-0">
+                        <img src="https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?q=80&w=800&auto=format&fit=crop" alt="Lifestyle Room" class="w-full h-full object-cover object-right opacity-70">
+                        <div class="absolute inset-0 bg-gradient-to-r from-[#EAE8E3] via-[#EAE8E3]/85 to-transparent"></div>
+                    </div>
+                    <div class="relative z-10 max-w-[230px]">
+                        <h3 class="font-extrabold text-lg sm:text-xl tracking-tight text-gray-900 leading-snug">
+                            Better Choices <br/>for Everyday Life
+                        </h3>
+                        <p class="text-[11px] text-gray-600 mt-2 leading-relaxed">
+                            Everyday wellness solutions delivered home.
+                        </p>
+                    </div>
+                    <div class="relative z-10 pt-4">
+                        <a href="#cat-health" class="inline-flex items-center gap-2 bg-evines hover:bg-evines-dark text-white text-xs font-semibold px-4 py-2 rounded-full transition-all">
+                            <span>Shop Wellness</span>
+                            <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Badges Strip -->
+    <section class="bg-gray-100 border-b border-gray-200/60 py-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-6 text-center md:text-left">
+                
+                <div class="flex flex-col md:flex-row items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-evines shrink-0">
+                        <i class="fa-solid fa-award text-base"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-bold text-gray-900">Evines Quality</h4>
+                        <p class="text-[10px] text-gray-500 mt-0.5">Lab tested & pure</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col md:flex-row items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-evines shrink-0">
+                        <i class="fa-solid fa-check-double text-base"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-bold text-gray-900">100% Genuine</h4>
+                        <p class="text-[10px] text-gray-500 mt-0.5">Direct from source</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col md:flex-row items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-evines shrink-0">
+                        <i class="fa-solid fa-truck-ramp-box text-base"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-bold text-gray-900">Fast Delivery</h4>
+                        <p class="text-[10px] text-gray-500 mt-0.5">Pan-India dispatch</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col md:flex-row items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-evines shrink-0">
+                        <i class="fa-solid fa-shield-cat text-base"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-bold text-gray-900">Secure Payment</h4>
+                        <p class="text-[10px] text-gray-500 mt-0.5">UPI, Cards & Netbanking</p>
+                    </div>
+                </div>
+
+                <div class="flex flex-col md:flex-row items-center gap-3 col-span-2 md:col-span-1">
+                    <div class="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-evines shrink-0">
+                        <i class="fa-solid fa-arrow-rotate-left text-base"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-bold text-gray-900">7 Days Return</h4>
+                        <p class="text-[10px] text-gray-500 mt-0.5">Hassle-free replacement</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer id="footer" class="bg-evines text-white pt-12 pb-6 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 pb-10 border-b border-emerald-800/60">
+                
+                <div class="lg:col-span-1 space-y-3">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center text-white">
+                            <i class="fa-solid fa-leaf text-base"></i>
+                        </div>
+                        <span class="text-xl font-bold tracking-tight">Evines</span>
+                    </div>
+                    <p class="text-[11px] text-emerald-200/80 leading-relaxed">
+                        Better Choices. A Healthier You.
+                    </p>
+                </div>
+
+                <div class="space-y-3">
+                    <h4 class="text-xs font-bold tracking-wider text-emerald-100 uppercase">Quick Links</h4>
+                    <ul class="space-y-2 text-xs text-emerald-200/70">
+                        <li><a href="#" class="hover:text-white transition-colors">Home</a></li>
+                        <li><a href="#catalog-section" class="hover:text-white transition-colors">Shop All</a></li>
+                        <li><a href="#about-section" class="hover:text-white transition-colors">About Evines</a></li>
+                        <li><a href="#footer" class="hover:text-white transition-colors">Contact Support</a></li>
+                    </ul>
+                </div>
+
+                <div class="space-y-3">
+                    <h4 class="text-xs font-bold tracking-wider text-emerald-100 uppercase">Categories</h4>
+                    <ul class="space-y-2 text-xs text-emerald-200/70">
+                        <li><a href="#cat-health" class="hover:text-white transition-colors">Health & Wellness</a></li>
+                        <li><a href="#cat-fitness" class="hover:text-white transition-colors">Fitness & Nutrition</a></li>
+                        <li><a href="#cat-skincare" class="hover:text-white transition-colors">Skincare & Beauty</a></li>
+                        <li><a href="#cat-personal" class="hover:text-white transition-colors">Personal Care</a></li>
+                    </ul>
+                </div>
+
+                <div class="space-y-3">
+                    <h4 class="text-xs font-bold tracking-wider text-emerald-100 uppercase">Support</h4>
+                    <ul class="space-y-2 text-xs text-emerald-200/70">
+                        <li><a href="#" class="hover:text-white transition-colors">FAQs</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Shipping Info</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Returns & Refunds</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Track Order</a></li>
+                    </ul>
+                </div>
+
+                <div class="space-y-3 lg:col-span-1">
+                    <h4 class="text-xs font-bold tracking-wider text-emerald-100 uppercase">Stay Connected</h4>
+                    <p class="text-[11px] text-emerald-200/70">Get exclusive offers & wellness updates.</p>
+                    
+                    <form onsubmit="subscribeNewsletter(event)" class="relative flex items-center mt-2">
+                        <input type="email" required placeholder="Enter your email" class="w-full bg-white text-gray-800 text-xs py-2.5 pl-3 pr-10 rounded-lg outline-none placeholder-gray-400">
+                        <button type="submit" class="absolute right-1 w-8 h-8 bg-evines hover:bg-evines-dark text-white rounded-md flex items-center justify-center transition-colors">
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </button>
+                    </form>
+
+                    <div class="flex items-center gap-3 pt-3 text-emerald-200">
+                        <a href="#" class="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-xs transition-colors"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-xs transition-colors"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" class="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-xs transition-colors"><i class="fa-brands fa-youtube"></i></a>
+                        <a href="#" class="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-xs transition-colors"><i class="fa-brands fa-x-twitter"></i></a>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="pt-6 flex flex-col sm:flex-row items-center justify-between text-[11px] text-emerald-300/60 gap-4">
+                <p>© 2026 Evines Health Care Pvt Ltd. All rights reserved.</p>
+                <div class="flex items-center gap-4">
+                    <a href="#" class="hover:text-emerald-200 transition-colors">Privacy Policy</a>
+                    <span>|</span>
+                    <a href="#" class="hover:text-emerald-200 transition-colors">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bottom Floating Navigation -->
+    <nav id="bottom-nav" class="bottom-nav fixed bottom-3 left-1/2 -translate-x-1/2 z-40 bg-white/95 backdrop-blur-md border border-gray-200 shadow-xl rounded-full px-5 py-2.5 flex items-center gap-5 sm:gap-7 max-w-[95vw]">
+        <!-- 1. Home -->
+        <a href="#" class="flex flex-col items-center gap-0.5 text-gray-600 hover:text-evines transition-colors group">
+            <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"/></svg>
+            <span class="text-[9px] font-bold tracking-tight">Home</span>
+        </a>
+
+        <!-- 2. Categories -->
+        <a href="#categories" class="flex flex-col items-center gap-0.5 text-gray-600 hover:text-evines transition-colors group">
+            <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 016 3.75h2.25A2.25 2.25 0 0110.5 6v2.25a2.25 2.25 0 01-2.25 2.25H6a2.25 2.25 0 01-2.25-2.25V6zM3.75 15.75A2.25 2.25 0 016 13.5h2.25a2.25 2.25 0 012.25 2.25V18a2.25 2.25 0 01-2.25 2.25H6A2.25 2.25 0 013.75 18v-2.25zM13.5 6a2.25 2.25 0 012.25-2.25H18A2.25 2.25 0 0120.25 6v2.25A2.25 2.25 0 0118 10.5h-2.25a2.25 2.25 0 01-2.25-2.25V6zM13.5 15.75a2.25 2.25 0 012.25-2.25H18a2.25 2.25 0 012.25 2.25V18A2.25 2.25 0 0118 20.25h-2.25A2.25 2.25 0 0113.5 18v-2.25z"/></svg>
+            <span class="text-[9px] font-bold tracking-tight">Categories</span>
+        </a>
+
+        <!-- 3. Wishlist -->
+        <button onclick="openWishlistModal()" class="flex flex-col items-center gap-0.5 text-gray-600 hover:text-red-500 transition-colors group relative">
+            <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/></svg>
+            <span class="text-[9px] font-bold tracking-tight">Wishlist</span>
+        </button>
+
+        <!-- 4. Account -->
+        <button onclick="handleAccountClick()" class="flex flex-col items-center gap-0.5 text-gray-600 hover:text-evines transition-colors group">
+            <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
+            <span class="text-[9px] font-bold tracking-tight">Account</span>
+        </button>
+
+        <!-- 5. Cart -->
+        <button onclick="toggleCartDrawer()" class="flex flex-col items-center gap-0.5 text-gray-600 hover:text-evines transition-colors group relative">
+            <svg class="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"/></svg>
+            <span class="text-[9px] font-bold tracking-tight">Cart</span>
+        </button>
+    </nav>
+
+    <!-- Authentication Modal (Email / Mobile OTP) -->
+    <div id="authModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
+        <div class="fixed inset-0 bg-black/60 backdrop-blur-sm" onclick="closeAuthModal()"></div>
+        <div class="relative min-h-screen flex items-center justify-center p-4">
+            <div class="relative bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl z-10 my-8">
+                <button onclick="closeAuthModal()" class="absolute top-5 right-5 text-gray-400 hover:text-gray-600 p-1">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+
+                <!-- Header Logo & Title -->
+                <div class="text-center mb-6">
+                    <div class="w-12 h-12 bg-evines text-white rounded-full flex items-center justify-center mx-auto mb-2 text-xl shadow-md">
+                        <i class="fa-solid fa-leaf"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900" id="auth-modal-title">Welcome to Evines</h3>
+                    <p class="text-xs text-gray-500 mt-1" id="auth-modal-subtitle">Login or create an account with OTP</p>
+                </div>
+
+                <!-- Input Step 1: Request OTP -->
+                <form id="auth-request-form" onsubmit="handleSendOTP(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-[11px] font-bold text-gray-700 uppercase mb-1">Email or Mobile Number</label>
+                        <div class="relative">
+                            <i class="fa-regular fa-envelope absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-xs"></i>
+                            <input type="text" id="auth-identifier" required placeholder="user@example.com or 9876543210" class="w-full bg-gray-50 border border-gray-200 text-xs rounded-xl pl-9 pr-3 py-3 outline-none focus:border-evines font-medium">
+                        </div>
+                    </div>
+
+                    <button type="submit" id="send-otp-btn" class="w-full bg-evines hover:bg-evines-dark text-white font-bold py-3 rounded-xl text-xs transition-colors shadow-md flex items-center justify-center gap-2">
+                        <span>Get Verification OTP</span>
+                        <i class="fa-solid fa-paper-plane text-xs"></i>
+                    </button>
+                </form>
+
+                <!-- Input Step 2: Verify OTP -->
+                <form id="auth-verify-form" onsubmit="handleVerifyOTP(event)" class="space-y-4 hidden">
+                    <div class="bg-emerald-50 border border-emerald-100 rounded-xl p-3 text-center">
+                        <p class="text-xs text-gray-700 font-medium">OTP sent to <span id="sent-target-display" class="font-bold text-evines"></span></p>
+                        <p class="text-[10px] text-gray-500 mt-0.5">Use OTP <strong class="text-emerald-700 font-bold">123456</strong> for demo login</p>
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-bold text-gray-700 uppercase mb-1 text-center">Enter 6-Digit OTP</label>
+                        <input type="text" id="otp-input" maxlength="6" pattern="[0-9]{6}" required placeholder="123456" class="w-full bg-gray-50 border border-gray-200 text-center tracking-widest text-lg font-extrabold rounded-xl py-2.5 outline-none focus:border-evines">
+                    </div>
+
+                    <button type="submit" id="verify-otp-btn" class="w-full bg-evines hover:bg-evines-dark text-white font-bold py-3 rounded-xl text-xs transition-colors shadow-md flex items-center justify-center gap-2">
+                        <span>Verify & Login</span>
+                        <i class="fa-solid fa-shield-check text-xs"></i>
+                    </button>
+
+                    <button type="button" onclick="resetAuthForm()" class="w-full text-xs text-gray-500 hover:text-gray-800 font-medium text-center block pt-1">
+                        ← Change Email / Mobile Number
+                    </button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- NEW: Dedicated User Account Details Panel (Slide-in Drawer) -->
+    <div id="accountDrawer" class="fixed inset-0 z-50 overflow-hidden hidden">
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" onclick="toggleAccountDrawer()"></div>
+        <div class="fixed inset-y-0 right-0 max-w-full flex pl-10">
+            <div class="w-screen max-w-md bg-white shadow-2xl flex flex-col h-full">
+                <!-- Account Header -->
+                <div class="p-4 bg-evines text-white flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-user-gear"></i>
+                        <h2 class="text-base font-bold">My Account</h2>
+                    </div>
+                    <button onclick="toggleAccountDrawer()" class="text-emerald-200 hover:text-white text-lg p-1">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <!-- Account Content Scrollable -->
+                <div class="flex-1 overflow-y-auto p-5 space-y-6 custom-scrollbar">
+                    
+                    <!-- Profile Card -->
+                    <div class="bg-emerald-50/60 p-4 rounded-2xl border border-emerald-100 flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-evines text-white flex items-center justify-center text-lg font-bold">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h3 class="text-sm font-bold text-gray-900 truncate" id="acc-display-name">Valued Customer</h3>
+                            <p class="text-xs text-gray-500 truncate" id="acc-display-email">user@example.com</p>
+                        </div>
+                    </div>
+
+                    <!-- Personal Info Form -->
+                    <div class="space-y-3">
+                        <h4 class="text-xs font-bold text-gray-900 uppercase tracking-wider border-b pb-1">Personal & Address Details</h4>
+                        <form onsubmit="saveProfileDetails(event)" class="space-y-3">
+                            <div>
+                                <label class="block text-[11px] font-semibold text-gray-600 mb-1">Full Name</label>
+                                <input type="text" id="user-full-name" value="Rahul Sharma" class="w-full bg-gray-50 border border-gray-200 text-xs rounded-xl p-2.5 outline-none focus:border-evines font-medium">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-gray-600 mb-1">Phone Number</label>
+                                <input type="tel" id="user-phone" value="9876543210" class="w-full bg-gray-50 border border-gray-200 text-xs rounded-xl p-2.5 outline-none focus:border-evines font-medium">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-semibold text-gray-600 mb-1">Delivery Address</label>
+                                <textarea id="user-address" rows="2" class="w-full bg-gray-50 border border-gray-200 text-xs rounded-xl p-2.5 outline-none focus:border-evines font-medium">Flat 402, Highrise Heights, Bandra West, Mumbai, Maharashtra - 400050</textarea>
+                            </div>
+                            <button type="submit" class="w-full bg-evines hover:bg-evines-dark text-white font-semibold py-2.5 rounded-xl text-xs transition-colors shadow-sm">
+                                Save Profile Details
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- My Orders Section -->
+                    <div class="space-y-3 pt-2">
+                        <h4 class="text-xs font-bold text-gray-900 uppercase tracking-wider border-b pb-1">Order History</h4>
+                        <div id="user-orders-list" class="space-y-2.5">
+                            <!-- Dynamic Orders list -->
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Account Footer -->
+                <div class="p-4 border-t border-gray-100 bg-gray-50">
+                    <button onclick="logoutUser()" class="w-full bg-red-50 hover:bg-red-100 text-red-600 font-bold py-2.5 rounded-xl text-xs transition-colors flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-right-from-bracket text-xs"></i>
+                        <span>Logout Account</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide-in Cart Drawer -->
+    <div id="cartDrawer" class="fixed inset-0 z-50 overflow-hidden hidden">
+        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm transition-opacity" onclick="toggleCartDrawer()"></div>
+        <div class="fixed inset-y-0 right-0 max-w-full flex pl-10">
+            <div class="w-screen max-w-md bg-white shadow-2xl flex flex-col">
+                <!-- Cart Header -->
+                <div class="p-4 bg-evines text-white flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                        <i class="fa-solid fa-bag-shopping"></i>
+                        <h2 class="text-base font-bold">Your Evines Cart</h2>
+                    </div>
+                    <button onclick="toggleCartDrawer()" class="text-emerald-200 hover:text-white text-lg p-1">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <!-- Free Delivery Tracker -->
+                <div class="bg-emerald-50 p-3 border-b border-emerald-100">
+                    <div class="flex justify-between text-[11px] text-gray-700 font-medium mb-1.5" id="free-shipping-text">
+                        <span>Free Shipping Progress</span>
+                        <span>₹0 / ₹999</span>
+                    </div>
+                    <div class="w-full bg-gray-200 h-2 rounded-full overflow-hidden">
+                        <div id="free-shipping-bar" class="bg-evines h-full w-0 transition-all duration-300"></div>
+                    </div>
+                </div>
+
+                <!-- Cart Items List -->
+                <div id="cart-items-container" class="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar">
+                    <div id="empty-cart-msg" class="text-center py-12 text-gray-400">
+                        <i class="fa-solid fa-basket-shopping text-4xl mb-3 text-gray-300"></i>
+                        <p class="text-sm">Your cart is currently empty.</p>
+                    </div>
+                </div>
+
+                <!-- Voucher Code Box -->
+                <div class="px-4 py-2 border-t border-gray-100 bg-white">
+                    <div class="flex gap-2">
+                        <input type="text" id="voucher-input" placeholder="Promo code (EVINES10)" class="uppercase bg-gray-100 text-xs px-3 py-2 rounded-lg flex-1 outline-none border border-transparent focus:border-evines">
+                        <button onclick="applyVoucher()" class="bg-gray-800 hover:bg-black text-white text-xs font-semibold px-4 py-2 rounded-lg transition-colors">Apply</button>
+                    </div>
+                    <p id="voucher-msg" class="text-[10px] mt-1 hidden"></p>
+                </div>
+
+                <!-- Cart Summary Footer -->
+                <div class="p-4 border-t border-gray-100 bg-gray-50 space-y-2">
+                    <div class="flex justify-between text-xs text-gray-600">
+                        <span>Subtotal</span>
+                        <span id="cart-subtotal" class="font-medium">₹0</span>
+                    </div>
+                    <div class="flex justify-between text-xs text-gray-600">
+                        <span>Discount</span>
+                        <span id="cart-discount" class="font-medium text-emerald-600">-₹0</span>
+                    </div>
+                    <div class="flex justify-between text-xs text-gray-600">
+                        <span>Estimated Shipping</span>
+                        <span id="cart-shipping" class="font-medium">₹0</span>
+                    </div>
+                    <div class="flex justify-between text-sm font-bold text-gray-900 pt-2 border-t border-gray-200">
+                        <span>Total Payable</span>
+                        <span id="cart-total" class="text-evines font-extrabold">₹0</span>
+                    </div>
+                    <button onclick="openCheckoutModal()" class="w-full bg-evines hover:bg-evines-dark text-white font-semibold py-3 rounded-xl text-xs transition-colors flex items-center justify-center gap-2 mt-2">
+                        <span>Proceed to Checkout</span>
+                        <i class="fa-solid fa-arrow-right text-xs"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Detail Full View Modal (Includes Similar Slider) -->
+    <div id="productModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
+        <div class="fixed inset-0 bg-black/60 backdrop-blur-sm" onclick="closeProductModal()"></div>
+        <div class="relative min-h-screen flex items-center justify-center p-3 sm:p-6">
+            <div class="relative bg-white rounded-3xl max-w-3xl w-full p-5 sm:p-8 shadow-2xl overflow-hidden z-10 my-6 max-h-[90vh] flex flex-col">
+                <button onclick="closeProductModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 p-2 bg-gray-100 rounded-full z-20">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+                
+                <div class="overflow-y-auto custom-scrollbar pr-1 space-y-8" id="modal-product-content">
+                    <!-- Dynamic Product Page UI -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Multi-step Modal -->
+    <div id="checkoutModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
+        <div class="fixed inset-0 bg-black/50 backdrop-blur-sm" onclick="closeCheckoutModal()"></div>
+        <div class="relative min-h-screen flex items-center justify-center p-4">
+            <div class="relative bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl z-10 my-8">
+                <button onclick="closeCheckoutModal()" class="absolute top-5 right-5 text-gray-400 hover:text-gray-600 p-1">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+
+                <div class="flex items-center gap-3 mb-6 border-b border-gray-100 pb-4">
+                    <div class="w-8 h-8 rounded-full bg-evines text-white flex items-center justify-center text-xs font-bold">1</div>
+                    <h3 class="text-lg font-bold text-gray-900">Shipping & Payment Details</h3>
+                </div>
+
+                <form id="checkout-form" onsubmit="processOrder(event)" class="space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[11px] font-bold text-gray-700 uppercase mb-1">Full Name *</label>
+                            <input type="text" required id="cust-name" placeholder="Rahul Sharma" class="w-full bg-gray-50 border border-gray-200 text-xs rounded-xl p-2.5 outline-none focus:border-evines">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-gray-700 uppercase mb-1">Mobile Number *</label>
+                            <input type="tel" required pattern="[0-9]{10}" placeholder="9876543210" class="w-full bg-gray-50 border border-gray-200 text-xs rounded-xl p-2.5 outline-none focus:border-evines">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-bold text-gray-700 uppercase mb-1">Shipping Address *</label>
+                        <input type="text" required placeholder="Flat / House No. / Street / Area" class="w-full bg-gray-50 border border-gray-200 text-xs rounded-xl p-2.5 outline-none focus:border-evines">
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-3">
+                        <div>
+                            <label class="block text-[11px] font-bold text-gray-700 uppercase mb-1">City *</label>
+                            <input type="text" required placeholder="Mumbai" class="w-full bg-gray-50 border border-gray-200 text-xs rounded-xl p-2.5 outline-none focus:border-evines">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-gray-700 uppercase mb-1">State *</label>
+                            <input type="text" required placeholder="Maharashtra" class="w-full bg-gray-50 border border-gray-200 text-xs rounded-xl p-2.5 outline-none focus:border-evines">
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-bold text-gray-700 uppercase mb-1">Pincode *</label>
+                            <input type="text" required pattern="[0-9]{6}" placeholder="400001" class="w-full bg-gray-50 border border-gray-200 text-xs rounded-xl p-2.5 outline-none focus:border-evines">
+                        </div>
+                    </div>
+
+                    <div class="pt-2">
+                        <label class="block text-[11px] font-bold text-gray-700 uppercase mb-2">Select Payment Method</label>
+                        <div class="grid grid-cols-2 gap-2">
+                            <label class="flex items-center gap-2 border rounded-xl p-2.5 cursor-pointer hover:bg-emerald-50/50 text-xs">
+                                <input type="radio" name="payment" value="UPI" checked onclick="togglePaymentFields('UPI')" class="accent-evines">
+                                <span class="font-semibold text-gray-800">UPI / GPay / PhonePe</span>
+                            </label>
+                            <label class="flex items-center gap-2 border rounded-xl p-2.5 cursor-pointer hover:bg-emerald-50/50 text-xs">
+                                <input type="radio" name="payment" value="Card" onclick="togglePaymentFields('Card')" class="accent-evines">
+                                <span class="font-semibold text-gray-800">Debit / Credit Card</span>
+                            </label>
+                            <label class="flex items-center gap-2 border rounded-xl p-2.5 cursor-pointer hover:bg-emerald-50/50 text-xs">
+                                <input type="radio" name="payment" value="NetBanking" onclick="togglePaymentFields('NetBanking')" class="accent-evines">
+                                <span class="font-semibold text-gray-800">Net Banking</span>
+                            </label>
+                            <label class="flex items-center gap-2 border rounded-xl p-2.5 cursor-pointer hover:bg-emerald-50/50 text-xs">
+                                <input type="radio" name="payment" value="COD" onclick="togglePaymentFields('COD')" class="accent-evines">
+                                <span class="font-semibold text-gray-800">Cash on Delivery</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div id="payment-extra-field" class="pt-1">
+                        <input type="text" id="upi-input" placeholder="Enter UPI ID (e.g., username@upi)" class="w-full bg-gray-50 border border-gray-200 text-xs rounded-xl p-2.5 outline-none focus:border-evines">
+                    </div>
+
+                    <div class="pt-4 border-t border-gray-100 flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] text-gray-500 uppercase font-bold">Total Amount</span>
+                            <p id="checkout-final-price" class="text-lg font-extrabold text-evines">₹0</p>
+                        </div>
+                        <button type="submit" id="pay-now-btn" class="bg-evines hover:bg-evines-dark text-white font-bold px-6 py-3 rounded-xl text-xs flex items-center gap-2 transition-all shadow-md">
+                            <span>Place Order</span>
+                            <i class="fa-solid fa-shield-halved text-xs"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Success / Invoice Modal -->
+    <div id="orderSuccessModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
+        <div class="fixed inset-0 bg-black/60 backdrop-blur-sm"></div>
+        <div class="relative min-h-screen flex items-center justify-center p-4">
+            <div class="relative bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl text-center z-10 my-8">
+                <div class="w-16 h-16 bg-emerald-100 text-evines rounded-full flex items-center justify-center text-2xl mx-auto mb-4 animate-bounce">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-900">Order Confirmed!</h3>
+                <p class="text-xs text-gray-500 mt-1">Thank you for choosing Evines. Your order has been placed successfully.</p>
+
+                <div class="bg-gray-50 rounded-2xl p-4 my-6 text-left border border-gray-100 space-y-2">
+                    <div class="flex justify-between text-xs">
+                        <span class="text-gray-500">Order ID:</span>
+                        <span id="order-id-display" class="font-bold text-gray-800">#EVN-129034</span>
+                    </div>
+                    <div class="flex justify-between text-xs">
+                        <span class="text-gray-500">Estimated Delivery:</span>
+                        <span class="font-bold text-emerald-600">2 - 4 Business Days</span>
+                    </div>
+                    <div class="flex justify-between text-xs">
+                        <span class="text-gray-500">Payment Status:</span>
+                        <span id="order-payment-status" class="font-bold text-gray-800">Paid via UPI</span>
+                    </div>
+                </div>
+
+                <button onclick="finishOrder()" class="w-full bg-evines hover:bg-evines-dark text-white font-bold py-3 rounded-xl text-xs transition-colors">
+                    Continue Shopping
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wishlist View Modal -->
+    <div id="wishlistModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
+        <div class="fixed inset-0 bg-black/50 backdrop-blur-sm" onclick="closeWishlistModal()"></div>
+        <div class="relative min-h-screen flex items-center justify-center p-4">
+            <div class="relative bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl z-10 my-8">
+                <div class="flex justify-between items-center mb-4 pb-2 border-b">
+                    <h3 class="text-base font-bold text-gray-900 flex items-center gap-2">
+                        <i class="fa-solid fa-heart text-red-500"></i> My Wishlist
+                    </h3>
+                    <button onclick="closeWishlistModal()" class="text-gray-400 hover:text-gray-600">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <div id="wishlist-items-content" class="space-y-3 max-h-80 overflow-y-auto custom-scrollbar">
+                    <!-- Dynamic wishlist list -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Evines Products Catalog
+        const PRODUCTS = [
+            {
+                id: 101,
+                title: "Evines Daily Multivitamin",
+                category: "Health & Wellness",
+                variant: "60 Essential Tablets",
+                price: 899,
+                rating: 4.8,
+                reviews: "856",
+                isBestSeller: true,
+                image: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?q=80&w=400&auto=format&fit=crop",
+                description: "Complete health supplement infused with Zinc, Vitamin D3, B12 and Ginseng to enhance daily endurance.",
+                variants: ["60 Tablets", "120 Tablets"]
+            },
+            {
+                id: 102,
+                title: "Evines Triple Strength Omega 3",
+                category: "Health & Wellness",
+                variant: "1000mg EPA/DHA | 60 Softgels",
+                price: 1299,
+                rating: 4.9,
+                reviews: "1.1k",
+                isBestSeller: true,
+                image: "https://images.unsplash.com/photo-1550572017-edd951baa742?q=80&w=400&auto=format&fit=crop",
+                description: "Pure distilled fish oil rich in Omega-3 essential fatty acids supporting cardiovascular and joint vitality.",
+                variants: ["60 Softgels", "120 Softgels"]
+            },
+            {
+                id: 103,
+                title: "Evines Pure Organic Green Tea",
+                category: "Health & Wellness",
+                variant: "Himalayan Whole Leaf | 50 Bags",
+                price: 449,
+                rating: 4.6,
+                reviews: "320",
+                isBestSeller: false,
+                image: "https://images.unsplash.com/photo-1576092768241-dec231879fc3?q=80&w=400&auto=format&fit=crop",
+                description: "Antioxidant-dense unfermented green tea promoting metabolic detox and smooth digestion.",
+                variants: ["50 Bags", "100 Bags"]
+            },
+            {
+                id: 104,
+                title: "Evines Organic Ashwagandha",
+                category: "Health & Wellness",
+                variant: "KSM-66 Extract | 60 Capsules",
+                price: 699,
+                rating: 4.7,
+                reviews: "480",
+                isBestSeller: false,
+                image: "https://images.unsplash.com/photo-1616671285420-13f56b603eb0?q=80&w=400&auto=format&fit=crop",
+                description: "Adaptogenic herb formula designed to reduce cortisol levels, calm stress, and improve deep sleep quality.",
+                variants: ["60 Capsules", "120 Capsules"]
+            },
+            {
+                id: 201,
+                title: "Evines Ultra Whey Isolate",
+                category: "Fitness & Nutrition",
+                variant: "Rich Dutch Chocolate | 1kg",
+                price: 2499,
+                rating: 4.9,
+                reviews: "2.4k",
+                isBestSeller: true,
+                image: "https://images.unsplash.com/photo-1593095948071-474c5cc2989d?q=80&w=400&auto=format&fit=crop",
+                description: "Micro-filtered fast-absorbing whey isolate providing 27g protein per serving with zero added sugar.",
+                variants: ["Dutch Chocolate / 1kg", "Vanilla Bean / 1kg", "Mango Swirl / 1kg"]
+            },
+            {
+                id: 202,
+                title: "Evines Micronized Creatine",
+                category: "Fitness & Nutrition",
+                variant: "250g Unflavored Powder",
+                price: 899,
+                rating: 4.8,
+                reviews: "950",
+                isBestSeller: false,
+                image: "https://images.unsplash.com/photo-1579722820308-d74e571900a9?q=80&w=400&auto=format&fit=crop",
+                description: "100% pure monohydrate creatine for explosive muscle strength, endurance, and faster cell hydration.",
+                variants: ["250g", "500g"]
+            },
+            {
+                id: 203,
+                title: "Evines Electrolyte Hydrator",
+                category: "Fitness & Nutrition",
+                variant: "Zesty Orange | 30 Sachets",
+                price: 599,
+                rating: 4.7,
+                reviews: "410",
+                isBestSeller: false,
+                image: "https://images.unsplash.com/photo-1543362906-acfc16c67564?q=80&w=400&auto=format&fit=crop",
+                description: "Instant hydration formula packed with Sodium, Potassium, and Magnesium to prevent cramps.",
+                variants: ["Orange / 30 Packs", "Watermelon / 30 Packs"]
+            },
+            {
+                id: 301,
+                title: "Evines Marine Collagen Peptides",
+                category: "Skincare & Beauty",
+                variant: "With Hyaluronic Acid | 250g",
+                price: 1599,
+                rating: 4.8,
+                reviews: "670",
+                isBestSeller: true,
+                image: "https://images.unsplash.com/photo-1607613009820-a29f7bb81c04?q=80&w=400&auto=format&fit=crop",
+                description: "Hydrolyzed Type 1 & 3 marine collagen that reverses skin aging, restores elasticity and builds strong nails.",
+                variants: ["Unflavored / 250g", "Berry Blast / 250g"]
+            },
+            {
+                id: 302,
+                title: "Evines Glow Vitamin C Serum",
+                category: "Skincare & Beauty",
+                variant: "20% L-Ascorbic Acid | 30ml",
+                price: 799,
+                rating: 4.7,
+                reviews: "530",
+                isBestSeller: false,
+                image: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=400&auto=format&fit=crop",
+                description: "Brightening facial serum with Vitamin E & Ferulic acid to fade dark spots and boost collagen production.",
+                variants: ["30ml Bottle", "50ml Bottle"]
+            },
+            {
+                id: 303,
+                title: "Evines Botanical Hydrating Cleanser",
+                category: "Skincare & Beauty",
+                variant: "Aloe & Green Tea | 150ml",
+                price: 499,
+                rating: 4.6,
+                reviews: "290",
+                isBestSeller: false,
+                image: "https://images.unsplash.com/photo-1556228720-195a672e8a03?q=80&w=400&auto=format&fit=crop",
+                description: "Gentle non-foaming facial wash that lifts dirt while preserving natural skin moisture barrier.",
+                variants: ["150ml Pump"]
+            },
+            {
+                id: 401,
+                title: "Evines Organic Tea Tree Shampoo",
+                category: "Personal Care",
+                variant: "Anti-Dandruff | 300ml",
+                price: 599,
+                rating: 4.7,
+                reviews: "430",
+                isBestSeller: false,
+                image: "https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?q=80&w=400&auto=format&fit=crop",
+                description: "Sulfate-free scalp purifying shampoo infused with natural Australian tea tree oil and Neem extract.",
+                variants: ["300ml Bottle", "500ml Bottle"]
+            },
+            {
+                id: 402,
+                title: "Evines Nourishing Shea Body Butter",
+                category: "Personal Care",
+                variant: "Raw Cocoa & Coconut | 200g",
+                price: 649,
+                rating: 4.8,
+                reviews: "380",
+                isBestSeller: false,
+                image: "https://images.unsplash.com/photo-1608248597262-838d68968038?q=80&w=400&auto=format&fit=crop",
+                description: "Ultra-rich deep hydration cream for dry skin with pure shea butter and cold-pressed coconut oil.",
+                variants: ["200g Jar"]
+            }
+        ];
+
+        // Global State
+        let cart = [];
+        let wishlist = [];
+        let userOrders = [
+            { id: '#EVN-882194', items: 'Evines Daily Multivitamin x 1', total: '₹899', status: 'Delivered', date: '28 Sep 2026' }
+        ];
+        let appliedVoucher = false;
+        let currentUser = null; // Holds logged in user info
+
+        window.onload = function() {
+            renderCategorizedSliders();
+            setupScrollZoomObserver();
+            setupAutoHidingBottomNav();
+            updateCartUI();
+            updateWishlistUI();
+        };
+
+        function renderCategorizedSliders() {
+            const categories = [
+                { id: 'slider-health', cat: 'Health & Wellness' },
+                { id: 'slider-fitness', cat: 'Fitness & Nutrition' },
+                { id: 'slider-skincare', cat: 'Skincare & Beauty' },
+                { id: 'slider-personal', cat: 'Personal Care' }
+            ];
+
+            categories.forEach(item => {
+                const sliderContainer = document.getElementById(item.id);
+                if (!sliderContainer) return;
+
+                const filteredProducts = PRODUCTS.filter(p => p.category === item.cat);
+                sliderContainer.innerHTML = filteredProducts.map(p => createSlideCardHTML(p)).join('');
+            });
+        }
+
+        function createSlideCardHTML(product) {
+            const isWish = wishlist.includes(product.id);
+            return `
+            <div class="product-slide-card shrink-0 w-[240px] sm:w-[260px] bg-white rounded-2xl p-4 flex flex-col justify-between border border-gray-100 shadow-sm relative group select-none">
+                <div>
+                    <div class="relative bg-gray-50/80 rounded-xl p-3 aspect-square flex items-center justify-center overflow-hidden mb-3">
+                        ${product.isBestSeller ? '<span class="absolute top-2 left-2 bg-evines text-white text-[9px] font-semibold px-2 py-0.5 rounded-full z-10 shadow-sm">Best Seller</span>' : ''}
+                        <button onclick="toggleWishlist(${product.id}, event)" class="absolute top-2 right-2 hover:text-red-500 transition-colors z-10 p-1.5 bg-white/90 rounded-full backdrop-blur-sm shadow-sm">
+                            <i class="${isWish ? 'fa-solid text-red-500' : 'fa-regular text-gray-400'} fa-heart text-xs"></i>
+                        </button>
+                        <img src="${product.image}" alt="${product.title}" onclick="openProductModal(${product.id})" class="object-contain h-32 w-32 group-hover:scale-105 transition-transform duration-300 cursor-pointer">
+                    </div>
+                    <span class="text-[9px] text-emerald-800 font-extrabold bg-emerald-50 px-2 py-0.5 rounded-md uppercase tracking-wide">${product.category}</span>
+                    <h3 onclick="openProductModal(${product.id})" class="font-bold text-gray-900 text-xs sm:text-sm leading-snug mt-1 cursor-pointer hover:text-evines transition-colors line-clamp-1">${product.title}</h3>
+                    <p class="text-[10px] text-gray-600 font-medium mt-0.5 line-clamp-1">${product.variant}</p>
+                    <div class="flex items-center gap-1.5 mt-2 text-xs">
+                        <span class="text-amber-500 font-bold text-[11px]"><i class="fa-solid fa-star text-[10px]"></i> ${product.rating}</span>
+                        <span class="text-gray-500 text-[10px] font-semibold">(${product.reviews})</span>
+                    </div>
+                </div>
+                <div class="mt-3 pt-2.5 border-t border-gray-100 flex items-center justify-between gap-2">
+                    <span class="text-sm sm:text-base font-extrabold text-gray-900 antialiased">₹${product.price.toLocaleString('en-IN')}</span>
+                    <button onclick="addToCartById(${product.id})" class="bg-evines hover:bg-evines-dark text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg flex items-center gap-1.5 transition-colors shadow-sm">
+                        <i class="fa-solid fa-cart-plus text-[11px]"></i>
+                        <span>Add</span>
+                    </button>
+                </div>
+            </div>
+            `;
+        }
+
+        function scrollSlider(id, amount) {
+            const container = document.getElementById(id);
+            if (container) {
+                container.scrollBy({ left: amount, behavior: 'smooth' });
+            }
+        }
+
+        // Center-focused Zoom Engine
+        function setupScrollZoomObserver() {
+            const sliders = document.querySelectorAll('.slider-container');
+            
+            const updateScales = () => {
+                sliders.forEach(slider => {
+                    const cards = slider.querySelectorAll('.product-slide-card');
+                    const sliderRect = slider.getBoundingClientRect();
+                    const sliderCenter = sliderRect.left + sliderRect.width / 2;
+
+                    cards.forEach(card => {
+                        const cardRect = card.getBoundingClientRect();
+                        const cardCenter = cardRect.left + cardRect.width / 2;
+                        const distanceFromCenter = Math.abs(sliderCenter - cardCenter);
+                        
+                        const maxDistance = sliderRect.width / 1.8;
+                        let scale = 1.05 - (distanceFromCenter / maxDistance) * 0.12;
+                        scale = Math.max(0.92, Math.min(1.06, scale)); 
+                        
+                        let opacity = 1 - (distanceFromCenter / maxDistance) * 0.25;
+                        opacity = Math.max(0.75, Math.min(1, opacity));
+
+                        card.style.transform = `scale(${scale})`;
+                        card.style.opacity = opacity;
+                    });
+                });
+            };
+
+            sliders.forEach(slider => {
+                slider.addEventListener('scroll', updateScales, { passive: true });
+            });
+
+            window.addEventListener('resize', updateScales);
+            setTimeout(updateScales, 150);
+        }
+
+        // Auto-Hiding Bottom Navigation Bar on Scroll
+        function setupAutoHidingBottomNav() {
+            const nav = document.getElementById('bottom-nav');
+            let isScrolling;
+
+            window.addEventListener('scroll', () => {
+                nav.classList.add('bottom-nav-hidden');
+
+                clearTimeout(isScrolling);
+                isScrolling = setTimeout(() => {
+                    nav.classList.remove('bottom-nav-hidden');
+                }, 200);
+            }, { passive: true });
+        }
+
+        /* --- ACCOUNT & AUTHENTICATION ENGINE --- */
+        function handleAccountClick() {
+            if (currentUser) {
+                renderAccountData();
+                toggleAccountDrawer();
+            } else {
+                openAuthModal();
+            }
+        }
+
+        function toggleAccountDrawer() {
+            document.getElementById('accountDrawer').classList.toggle('hidden');
+        }
+
+        function renderAccountData() {
+            document.getElementById('acc-display-email').innerText = currentUser;
+            const ordersList = document.getElementById('user-orders-list');
+
+            if (userOrders.length === 0) {
+                ordersList.innerHTML = `<p class="text-xs text-gray-400 text-center py-4">No recent orders found.</p>`;
+            } else {
+                ordersList.innerHTML = userOrders.map(order => `
+                    <div class="bg-gray-50 border border-gray-100 p-3 rounded-xl text-xs space-y-1">
+                        <div class="flex justify-between font-bold text-gray-800">
+                            <span>${order.id}</span>
+                            <span class="text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full text-[10px]">${order.status}</span>
+                        </div>
+                        <p class="text-[11px] text-gray-600">${order.items}</p>
+                        <div class="flex justify-between text-[10px] text-gray-400 pt-1">
+                            <span>${order.date}</span>
+                            <span class="font-bold text-gray-700">${order.total}</span>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function saveProfileDetails(e) {
+            e.preventDefault();
+            const name = document.getElementById('user-full-name').value;
+            document.getElementById('acc-display-name').innerText = name || 'Valued Customer';
+            showToast('Account details updated successfully!');
+        }
+
+        function logoutUser() {
+            currentUser = null;
+            toggleAccountDrawer();
+            showToast('Logged out successfully');
+        }
+
+        function openAuthModal() {
+            resetAuthForm();
+            document.getElementById('authModal').classList.remove('hidden');
+        }
+
+        function closeAuthModal() {
+            document.getElementById('authModal').classList.add('hidden');
+        }
+
+        function resetAuthForm() {
+            document.getElementById('auth-request-form').classList.remove('hidden');
+            document.getElementById('auth-verify-form').classList.add('hidden');
+            document.getElementById('auth-identifier').value = '';
+            document.getElementById('otp-input').value = '';
+        }
+
+        function handleSendOTP(e) {
+            e.preventDefault();
+            const identifier = document.getElementById('auth-identifier').value.trim();
+            if (!identifier) return;
+
+            const btn = document.getElementById('send-otp-btn');
+            btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin text-xs"></i> Sending OTP...`;
+            btn.disabled = true;
+
+            setTimeout(() => {
+                document.getElementById('sent-target-display').innerText = identifier;
+                document.getElementById('auth-request-form').classList.add('hidden');
+                document.getElementById('auth-verify-form').classList.remove('hidden');
+                
+                btn.innerHTML = `<span>Get Verification OTP</span> <i class="fa-solid fa-paper-plane text-xs"></i>`;
+                btn.disabled = false;
+                showToast('OTP sent successfully! Use 123456');
+            }, 1000);
+        }
+
+        function handleVerifyOTP(e) {
+            e.preventDefault();
+            const otp = document.getElementById('otp-input').value.trim();
+            const identifier = document.getElementById('auth-identifier').value.trim();
+
+            if (otp === '123456' || otp.length === 6) {
+                currentUser = identifier;
+                closeAuthModal();
+                showToast(`Welcome! Logged in as ${currentUser} 🎉`);
+                renderAccountData();
+                toggleAccountDrawer();
+            } else {
+                showToast('Invalid OTP! Try entering 123456', 'info');
+            }
+        }
+
+        function addToCartById(id, selectedVariant) {
+            const product = PRODUCTS.find(p => p.id === id);
+            if (!product) return;
+
+            const variantName = selectedVariant || product.variant;
+            const existing = cart.find(item => item.id === id && item.variant === variantName);
+
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                cart.push({
+                    id: product.id,
+                    title: product.title,
+                    price: product.price,
+                    variant: variantName,
+                    image: product.image,
+                    qty: 1
+                });
+            }
+
+            updateCartUI();
+            showToast(`Added "${product.title}" to Evines cart!`);
+        }
+
+        function changeQty(index, delta) {
+            cart[index].qty += delta;
+            if (cart[index].qty <= 0) {
+                cart.splice(index, 1);
+            }
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const totalQty = cart.reduce((acc, item) => acc + item.qty, 0);
+            document.getElementById('cart-count').innerText = totalQty;
+
+            const container = document.getElementById('cart-items-container');
+            const subtotalEl = document.getElementById('cart-subtotal');
+            const discountEl = document.getElementById('cart-discount');
+            const shippingEl = document.getElementById('cart-shipping');
+            const totalEl = document.getElementById('cart-total');
+
+            let subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            let discount = appliedVoucher ? Math.round(subtotal * 0.10) : 0;
+            let shipping = subtotal > 999 || subtotal === 0 ? 0 : 99;
+            let finalTotal = subtotal - discount + shipping;
+
+            subtotalEl.innerText = '₹' + subtotal.toLocaleString('en-IN');
+            discountEl.innerText = '-₹' + discount.toLocaleString('en-IN');
+            shippingEl.innerText = shipping === 0 ? 'FREE' : '₹' + shipping;
+            totalEl.innerText = '₹' + finalTotal.toLocaleString('en-IN');
+            document.getElementById('checkout-final-price').innerText = '₹' + finalTotal.toLocaleString('en-IN');
+
+            const bar = document.getElementById('free-shipping-bar');
+            const freeText = document.getElementById('free-shipping-text');
+            const pct = Math.min(100, (subtotal / 999) * 100);
+            bar.style.width = pct + '%';
+            if (subtotal >= 999) {
+                freeText.innerHTML = `<span class="text-emerald-700 font-bold">🎉 You unlocked FREE Evines Shipping!</span>`;
+            } else {
+                freeText.innerHTML = `<span>Free Shipping Progress</span> <span>₹${subtotal} / ₹999</span>`;
+            }
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 text-gray-400">
+                        <i class="fa-solid fa-basket-shopping text-4xl mb-3 text-gray-300"></i>
+                        <p class="text-sm">Your Evines cart is empty.</p>
+                    </div>`;
+                return;
+            }
+
+            container.innerHTML = cart.map((item, idx) => `
+                <div class="flex items-center justify-between gap-3 p-3 bg-gray-50 rounded-xl border border-gray-100">
+                    <img src="${item.image}" alt="${item.title}" class="w-12 h-12 object-contain bg-white rounded-lg p-1 border">
+                    <div class="flex-1 min-w-0">
+                        <h4 class="text-xs font-bold text-gray-800 truncate">${item.title}</h4>
+                        <p class="text-[10px] text-gray-500">${item.variant}</p>
+                        <span class="text-xs font-semibold text-evines">₹${item.price.toLocaleString('en-IN')}</span>
+                    </div>
+                    <div class="flex items-center gap-2 bg-white px-2 py-1 rounded-lg border">
+                        <button onclick="changeQty(${idx}, -1)" class="text-xs text-gray-500 hover:text-red-500 font-bold">-</button>
+                        <span class="text-xs font-bold w-4 text-center">${item.qty}</span>
+                        <button onclick="changeQty(${idx}, 1)" class="text-xs text-gray-500 hover:text-evines font-bold">+</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleCartDrawer() {
+            document.getElementById('cartDrawer').classList.toggle('hidden');
+        }
+
+        function applyVoucher() {
+            const val = document.getElementById('voucher-input').value.trim().toUpperCase();
+            const msg = document.getElementById('voucher-msg');
+            if (val === 'EVINES10') {
+                appliedVoucher = true;
+                msg.innerText = '10% Discount code applied successfully!';
+                msg.className = 'text-[10px] mt-1 text-emerald-600 font-medium';
+                msg.classList.remove('hidden');
+                updateCartUI();
+                showToast('Promo code EVINES10 applied!');
+            } else {
+                msg.innerText = 'Invalid promo code. Use EVINES10';
+                msg.className = 'text-[10px] mt-1 text-red-500 font-medium';
+                msg.classList.remove('hidden');
+            }
+        }
+
+        function copyPromoCode(code) {
+            document.getElementById('voucher-input').value = code;
+            showToast(`Code ${code} copied to voucher input!`);
+        }
+
+        function toggleWishlist(id, e) {
+            if (e) e.stopPropagation();
+            const idx = wishlist.indexOf(id);
+            if (idx > -1) {
+                wishlist.splice(idx, 1);
+                showToast('Removed from Wishlist', 'info');
+            } else {
+                wishlist.push(id);
+                showToast('Added to Evines Wishlist ❤️');
+            }
+
+            updateWishlistUI();
+            renderCategorizedSliders();
+            setTimeout(setupScrollZoomObserver, 100);
+        }
+
+        function updateWishlistUI() {
+            const badge = document.getElementById('wishlist-count');
+            if (wishlist.length > 0) {
+                badge.innerText = wishlist.length;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
+
+        function openWishlistModal() {
+            const modal = document.getElementById('wishlistModal');
+            const container = document.getElementById('wishlist-items-content');
+
+            if (wishlist.length === 0) {
+                container.innerHTML = `<p class="text-xs text-gray-400 text-center py-6">Your wishlist is empty.</p>`;
+            } else {
+                const items = PRODUCTS.filter(p => wishlist.includes(p.id));
+                container.innerHTML = items.map(p => `
+                    <div class="flex items-center justify-between gap-3 p-2.5 bg-gray-50 rounded-xl border">
+                        <img src="${p.image}" class="w-10 h-10 object-contain bg-white rounded-md p-1">
+                        <div class="flex-1">
+                            <h4 class="text-xs font-bold text-gray-800">${p.title}</h4>
+                            <span class="text-xs text-evines font-semibold">₹${p.price}</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="addToCartById(${p.id}); closeWishlistModal();" class="bg-evines text-white text-[11px] px-3 py-1.5 rounded-lg font-medium">Add to Cart</button>
+                            <button onclick="toggleWishlist(${p.id}); openWishlistModal();" class="text-red-500 p-1"><i class="fa-solid fa-trash-can text-xs"></i></button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            modal.classList.remove('hidden');
+        }
+
+        function closeWishlistModal() {
+            document.getElementById('wishlistModal').classList.add('hidden');
+        }
+
+        // Full Product UI Modal + Related Slider Flow
+        function openProductModal(id) {
+            const product = PRODUCTS.find(p => p.id === id);
+            if (!product) return;
+
+            const relatedProducts = PRODUCTS.filter(p => p.category === product.category && p.id !== product.id);
+
+            const modalContent = document.getElementById('modal-product-content');
+            modalContent.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                    <div class="bg-gray-50 rounded-2xl p-6 flex items-center justify-center border border-gray-100 relative">
+                        <button onclick="toggleWishlist(${product.id}, event)" class="absolute top-3 right-3 text-gray-400 hover:text-red-500 transition-colors p-2 bg-white rounded-full shadow-sm">
+                            <i class="${wishlist.includes(product.id) ? 'fa-solid text-red-500' : 'fa-regular'} fa-heart text-sm"></i>
+                        </button>
+                        <img src="${product.image}" alt="${product.title}" class="max-h-64 object-contain">
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <span class="text-[10px] font-extrabold text-emerald-800 bg-emerald-100 px-2.5 py-1 rounded-full uppercase tracking-wider">${product.category}</span>
+                            <h3 class="text-2xl font-bold text-gray-900 mt-2">${product.title}</h3>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="text-amber-500 text-xs font-bold"><i class="fa-solid fa-star"></i> ${product.rating}</span>
+                                <span class="text-gray-500 text-xs font-medium">(${product.reviews} reviews)</span>
+                            </div>
+                        </div>
+
+                        <p class="text-xs text-gray-700 leading-relaxed font-normal">${product.description}</p>
+
+                        <div>
+                            <label class="block text-[11px] font-bold text-gray-700 uppercase mb-1">Select Variant</label>
+                            <select id="modal-variant-select" class="w-full bg-gray-100 border text-xs rounded-xl p-2.5 outline-none focus:border-evines font-medium">
+                                ${product.variants.map(v => `<option value="${v}">${v}</option>`).join('')}
+                            </select>
+                        </div>
+
+                        <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                            <span class="text-2xl font-extrabold text-gray-900">₹${product.price.toLocaleString('en-IN')}</span>
+                            <button onclick="addToCartById(${product.id}, document.getElementById('modal-variant-select').value); closeProductModal();" class="bg-evines hover:bg-evines-dark text-white text-xs font-bold px-6 py-3 rounded-xl flex items-center gap-2 shadow-md">
+                                <i class="fa-solid fa-cart-plus"></i> Add To Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Similar / Related Products Horizontal Section -->
+                <div class="pt-6 border-t border-gray-100">
+                    <div class="flex items-center justify-between mb-3">
+                        <h4 class="text-sm font-bold text-gray-900 uppercase tracking-wide">Product Related / Similar Items</h4>
+                    </div>
+                    <div class="slider-container flex gap-4 no-scrollbar py-2" id="modal-related-slider">
+                        ${relatedProducts.map(rel => `
+                            <div onclick="openProductModal(${rel.id})" class="shrink-0 w-[180px] bg-gray-50 hover:bg-emerald-50/40 p-3 rounded-2xl border border-gray-100 cursor-pointer transition-all">
+                                <img src="${rel.image}" class="w-full h-24 object-contain mb-2">
+                                <h5 class="text-xs font-bold text-gray-800 line-clamp-1">${rel.title}</h5>
+                                <p class="text-[10px] text-gray-500 mt-0.5 font-medium">₹${rel.price.toLocaleString('en-IN')}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            document.getElementById('productModal').classList.remove('hidden');
+        }
+
+        function closeProductModal() {
+            document.getElementById('productModal').classList.add('hidden');
+        }
+
+        function openCheckoutModal() {
+            if (cart.length === 0) {
+                showToast('Your cart is empty!', 'info');
+                return;
+            }
+            toggleCartDrawer();
+            document.getElementById('checkoutModal').classList.remove('hidden');
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkoutModal').classList.add('hidden');
+        }
+
+        function togglePaymentFields(type) {
+            const container = document.getElementById('payment-extra-field');
+            if (type === 'UPI') {
+                container.innerHTML = `<input type="text" id="upi-input" required placeholder="Enter UPI ID (e.g., username@upi)" class="w-full bg-gray-50 border border-gray-200 text-xs rounded-xl p-2.5 outline-none focus:border-evines">`;
+            } else if (type === 'Card') {
+                container.innerHTML = `
+                    <div class="space-y-2">
+                        <input type="text" required placeholder="Card Number (4532...)" class="w-full bg-gray-50 border border-gray-200 text-xs rounded-xl p-2.5 outline-none focus:border-evines">
+                        <div class="grid grid-cols-2 gap-2">
+                            <input type="text" required placeholder="MM/YY" class="bg-gray-50 border border-gray-200 text-xs rounded-xl p-2.5 outline-none">
+                            <input type="password" required maxlength="3" placeholder="CVV" class="bg-gray-50 border border-gray-200 text-xs rounded-xl p-2.5 outline-none">
+                        </div>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `<p class="text-[11px] text-gray-500 bg-gray-50 p-2.5 rounded-xl">Pay securely on delivery or complete via net banking portal.</p>`;
+            }
+        }
+
+        function processOrder(e) {
+            e.preventDefault();
+            const btn = document.getElementById('pay-now-btn');
+            btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Processing...`;
+            btn.disabled = true;
+
+            setTimeout(() => {
+                const orderId = '#EVN-' + Math.floor(100000 + Math.random() * 900000);
+                
+                // Add order to history
+                userOrders.unshift({
+                    id: orderId,
+                    items: cart.map(i => `${i.title} x ${i.qty}`).join(', '),
+                    total: document.getElementById('checkout-final-price').innerText,
+                    status: 'Processing',
+                    date: 'Today'
+                });
+
+                document.getElementById('order-id-display').innerText = orderId;
+                document.getElementById('order-payment-status').innerText = 'Paid Successfully';
+
+                closeCheckoutModal();
+                document.getElementById('orderSuccessModal').classList.remove('hidden');
+
+                btn.innerHTML = `<span>Place Order</span> <i class="fa-solid fa-shield-halved text-xs"></i>`;
+                btn.disabled = false;
+            }, 1500);
+        }
+
+        function finishOrder() {
+            cart = [];
+            appliedVoucher = false;
+            updateCartUI();
+            document.getElementById('orderSuccessModal').classList.add('hidden');
+            showToast('Order completed successfully! Visit Evines again.', 'success');
+        }
+
+        function handleSearch() {
+            const query = document.getElementById('searchInput').value.trim().toLowerCase();
+            const section = document.getElementById('search-results-section');
+            const grid = document.getElementById('search-grid');
+
+            if (query === '') {
+                section.classList.add('hidden');
+                return;
+            }
+
+            const matches = PRODUCTS.filter(p => 
+                p.title.toLowerCase().includes(query) || 
+                p.category.toLowerCase().includes(query) ||
+                p.variant.toLowerCase().includes(query)
+            );
+
+            section.classList.remove('hidden');
+            if (matches.length === 0) {
+                grid.innerHTML = `<p class="col-span-full text-xs text-gray-500 text-center py-4">No Evines products found matching "${query}"</p>`;
+            } else {
+                grid.innerHTML = matches.map(p => `
+                    <div class="bg-white rounded-xl p-2.5 border shadow-sm flex flex-col justify-between">
+                        <div>
+                            <img src="${p.image}" class="w-full h-24 object-contain rounded-lg mb-2">
+                            <h4 class="text-xs font-bold text-gray-800 line-clamp-1">${p.title}</h4>
+                            <p class="text-[10px] text-gray-500 font-semibold">₹${p.price}</p>
+                        </div>
+                        <button onclick="addToCartById(${p.id})" class="mt-2 bg-evines text-white text-[10px] font-bold py-1.5 rounded-lg">Add to Cart</button>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function handleSearchMobile(el) {
+            document.getElementById('searchInput').value = el.value;
+            handleSearch();
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('search-results-section').classList.add('hidden');
+        }
+
+        function subscribeNewsletter(e) {
+            e.preventDefault();
+            showToast('Subscribed to Evines newsletter!');
+            e.target.reset();
+        }
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `px-4 py-3 rounded-xl shadow-2xl text-xs font-semibold text-white flex items-center gap-2 transform transition-all duration-300 pointer-events-auto ${type === 'success' ? 'bg-evines' : 'bg-gray-800'}`;
+            toast.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-300"></i> <span>${message}</span>`;
+            
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 2500);
+        }
+    </script>
+</body>
+</html>
